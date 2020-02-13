@@ -47,7 +47,8 @@
     </style>
 </head>
 <body>
-<a href="index.jsp">Back to main menu</a>
+<%--<a href="../../index.jsp">Back to main menu</a>--%>
+<a href="<c:url value="/"/>" target="_self">Back to main menu</a>
 
 <br/>
 <br/>
@@ -82,9 +83,8 @@
 
 <h1>Add a User</h1>
 
-<c:url var="addAction" value="/users/add"/>
-
-<form:form action="${addAction}" commandName="user">
+<c:url var="addAction" value="/add"/>
+<form:form action="${addAction}" modelAttribute="user">
     <table>
         <c:if test="${!empty user.name}">
             <tr>

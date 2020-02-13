@@ -40,7 +40,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public void removeUser(int id) {
+    public void removeUser(Long id) {
         Session session = sessionFactory.getCurrentSession();
         User user = session.load(User.class, id);
 
@@ -51,7 +51,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public User getUserById(int id) {
+    public User getUserById(Long id) {
         Session session = sessionFactory.getCurrentSession();
         User user = session.load(User.class, id);
         LOGGER.log(Level.INFO, "User successfully loaded. User details: " + user);

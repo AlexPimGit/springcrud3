@@ -37,32 +37,33 @@ public class CrudController {
         return "users";
     }
 
-    @RequestMapping(value = "/users/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addUser(@ModelAttribute("user") User user) {
-        if (user.getId() == 0) {
-            userService.addUser(user);
-        } else {
+        if (user.getId() != null) {//есть ли какие-то другие способы проверки на существование объектов в базе ?
+//            userService.addUser(user);
             userService.updateUser(user);
+        } else {
+            userService.addUser(user);
         }
         return "redirect:/users";
     }
 
     @RequestMapping("/remove/{id}")
-    public String removeUser(@PathVariable("id") int id) {
+    public String removeUser(@PathVariable("id") Long id) {
         userService.removeUser(id);
 
         return "redirect:/users";
     }
 
     @RequestMapping("edit/{id}")
-    public String editUser(@PathVariable("id") int id, Model model) {
+    public String editUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         model.addAttribute("listUsers", userService.listUser());
         return "users";
     }
 
     @RequestMapping("userdata/{id}")
-    public String userData(@PathVariable("id") int id, Model model) {
+    public String userData(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         return "userdata";
     }

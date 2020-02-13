@@ -8,7 +8,7 @@
 <body>
 <h3>Spring CRUD</h3>
 <br/>
-<a href="<c:url value="/users"/>" target="_blank">Users list</a>
+<a href="<c:url value="/users"/>" target="_self">Users list</a>
 <br/>
 </body>
 </html>
