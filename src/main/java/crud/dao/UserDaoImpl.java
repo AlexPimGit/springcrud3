@@ -5,7 +5,6 @@ import crud.model.User;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -18,9 +17,8 @@ public class UserDaoImpl implements UserDao {
 
     private SessionFactory sessionFactory;
 
-    @Autowired// автоматически подтягивает бин-объект sessionFactory из метода
-
-    public void setSessionFactory(SessionFactory sessionFactory) {
+    @Autowired
+    public UserDaoImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
 

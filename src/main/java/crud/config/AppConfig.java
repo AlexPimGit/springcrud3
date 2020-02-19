@@ -21,8 +21,12 @@ import java.util.Properties;
 @ComponentScan(value = "crud")//сканим пэкадж "crud" на наличие бинов
 public class AppConfig {
 
-    @Autowired// подтягивает Environment из библиотеки Спринга, для дальнейшей ее конфигурации
+    //подтягивает Environment из библиотеки Спринга, для дальнейшей ее конфигурации
     private Environment env;
+
+    public AppConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public DataSource getDataSource() {
@@ -39,7 +43,7 @@ public class AppConfig {
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setDataSource(getDataSource());
 
-        Properties props=new Properties();
+        Properties props = new Properties();
         props.put("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
         props.put("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         props.put("hibernate.dialect", env.getProperty("hibernate.dialect"));

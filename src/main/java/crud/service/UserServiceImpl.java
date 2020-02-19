@@ -9,41 +9,36 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
+@Transactional//не надо вызывать типовой код try entityManager / .begin();/.commit();/catch .rollback();
 public class UserServiceImpl implements UserService {
-
     private UserDao userDao;
 
     @Autowired
-    public void setUserDao(UserDao userDao) {
+    public UserServiceImpl(UserDao userDao) {
         this.userDao = userDao;
     }
 
     @Override
-    @Transactional
     public void addUser(User user) {
         userDao.addUser(user);
     }
 
     @Override
-    @Transactional
     public void updateUser(User user) {
         userDao.updateUser(user);
     }
 
     @Override
-    @Transactional
     public void removeUser(Long id) {
         userDao.removeUser(id);
     }
 
     @Override
-    @Transactional
     public User getUserById(Long id) {
         return userDao.getUserById(id);
     }
 
     @Override
-    @Transactional
     public List<User> listUser() {
         return userDao.listUser();
     }

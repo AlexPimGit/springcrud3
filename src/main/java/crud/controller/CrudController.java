@@ -15,26 +15,23 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 //@RequestMapping("/")// дефолтный ЮРЛ для всех методов, ниже уточнение
 public class CrudController {
-
     private UserService userService;
 
     @Autowired
-    public void setUserService(UserService userService) {
+    public CrudController(UserService userService) {
         this.userService = userService;
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public ModelAndView AllUsers() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("index");
-        return modelAndView;
+    public String allUsers() {
+        return "index";
     }
 
-    @RequestMapping(value = "users", method = RequestMethod.GET)
-    public String listUsers(Model model) {
+    @RequestMapping(value = "users", method = RequestMethod.GET) //возвращать объект
+    public Model listUsers(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("listUsers", userService.listUser());
-        return "users";
+        return model;
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
