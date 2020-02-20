@@ -29,10 +29,17 @@ public class CrudController {
 
     @RequestMapping(value = "users", method = RequestMethod.GET) //возвращать объект
     public Model listUsers(Model model) {
-        model.addAttribute("user", new User());
+       model.addAttribute("user", new User());
         model.addAttribute("listUsers", userService.listUser());
         return model;
     }
+
+//    @RequestMapping(value = "users", method = RequestMethod.GET) //возвращать объект
+//    public Model listUsers(Model model) {
+//        model.addAttribute("user", new User());
+//        model.addAttribute("listUsers", userService.listUser());
+//        return model;
+//    }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String addUser(@ModelAttribute("user") User user) {
