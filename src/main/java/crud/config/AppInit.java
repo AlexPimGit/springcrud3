@@ -33,7 +33,6 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
         };
     }
 
-
     /* Данный метод указывает url, на котором будет базироваться приложение */
     @Override
     protected String[] getServletMappings() {
@@ -63,7 +62,7 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
         registration.setAsyncSupported(isAsyncSupported());
 //добавил
         servletContext.setSessionTrackingModes(getSessionTrackingModes());
-
+//
         Filter[] filters = getServletFilters();
         if (!ObjectUtils.isEmpty(filters)) {
             for (Filter filter : filters) {
@@ -73,14 +72,14 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
 
         customizeRegistration(registration);
     }
-
-    @Override
-    protected Filter[] getServletFilters() {
-        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-        characterEncodingFilter.setEncoding("UTF-8");
-        characterEncodingFilter.setForceEncoding(true);
-        return new Filter[]{characterEncodingFilter};
-    }
+//
+//    @Override
+//    protected Filter[] getServletFilters() {
+//        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+//        characterEncodingFilter.setEncoding("UTF-8");
+//        characterEncodingFilter.setForceEncoding(true);
+//        return new Filter[]{characterEncodingFilter};
+//    }
 
 
     protected Set<SessionTrackingMode> getSessionTrackingModes() {
