@@ -1,7 +1,7 @@
 package crud.config;
 
+import crud.model.Role;
 import crud.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -49,7 +49,8 @@ public class AppConfig {
         props.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
 
         factoryBean.setHibernateProperties(props);
-        factoryBean.setAnnotatedClasses(User.class);
+        factoryBean.setAnnotatedClasses(User.class, Role.class);
+//        factoryBean.setAnnotatedClasses(Role.class);//так не делатьЁЁ!!
         return factoryBean;
     }
 

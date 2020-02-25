@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 @Repository
 public class UserDaoImpl implements UserDao {
     private Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
-
     private SessionFactory sessionFactory;
 
     @Autowired
@@ -65,5 +64,13 @@ public class UserDaoImpl implements UserDao {
             LOGGER.log(Level.INFO, "User list: " + user);
         }
         return userList;
+    }
+
+    @Override
+    public User findByUsername(String name) {
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.load(User.class, name);
+        LOGGER.log(Level.INFO, "User successfully loaded. User details: " + user);
+        return user;
     }
 }

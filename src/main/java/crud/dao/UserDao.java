@@ -1,11 +1,10 @@
 package crud.dao;
 
 import crud.model.User;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+
 public interface UserDao {
     void addUser(User user);
 
@@ -17,6 +16,5 @@ public interface UserDao {
 
     List<User> listUser();
 
-
-
+    User findByUsername(String name);
 }
