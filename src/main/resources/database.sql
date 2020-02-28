@@ -33,13 +33,13 @@ CREATE TABLE users_roles
 ) ENGINE = InnoDB;
 
 -- Inset data
-INSERT INTO users VALUES (1, "shurik", "12345", "father", 35, "1@tut.by");
-INSERT INTO users VALUES (2, "yulia", "123", "mather", 33, "2@tut.by");
+INSERT INTO users VALUES (1, 'shurik', '12345', 'father', 35, '1@tut.by');
+INSERT INTO users VALUES (2, 'yulia', '123', 'mather', 33, '2@tut.by');
 
 INSERT INTO roles
-VALUES (1, "ADMIN");
+VALUES (1, 'ADMIN');
 INSERT INTO roles
-VALUES (2, "USER");
+VALUES (2, 'USER');
 
 INSERT INTO users_roles
 VALUES (1, 1);

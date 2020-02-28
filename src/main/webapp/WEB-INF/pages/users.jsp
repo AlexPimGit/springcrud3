@@ -45,7 +45,7 @@
     </style>
 </head>
 <body>
-<%--<a href="../../index.jsp">Back to main menu</a>--%>
+<%--<a href="../../login.jsp">Back to main menu</a>--%>
 <a href="<c:url value="/"/>" target="_self">Back to main menu</a>
 
 <br/>
@@ -58,6 +58,7 @@
         <tr>
             <th width="80">ID</th>
             <th width="120">Name</th>
+            <th width="120">Password</th>
             <th width="120">Position</th>
             <th width="120">Age</th>
             <th width="120">Email</th>
@@ -68,6 +69,7 @@
             <tr>
                 <td>${user.id}</td>
                 <td><a href="/userdata/${user.id}" target="_blank">${user.name}</a></td>
+                <td>${user.userPassword}</td>
                 <td>${user.position}</td>
                 <td>${user.age}</td>
                 <td>${user.email}</td>
@@ -105,6 +107,16 @@
             </td>
             <td>
                 <form:input path="name"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form:label path="userPassword">
+                    <spring:message text="Password"/>
+                </form:label>
+            </td>
+            <td>
+                <form:input path="userPassword"/>
             </td>
         </tr>
         <tr>

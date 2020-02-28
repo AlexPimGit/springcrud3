@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication().withUser("ADMIN").password("ADMIN").roles("ADMIN");
+//       auth.inMemoryAuthentication().withUser("ADMIN").password("ADMIN").roles("ADMIN");
         auth.userDetailsService(userDetailsService);
     }
 
@@ -59,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // делаем страницу регистрации недоступной для авторизированных пользователей
                 .authorizeRequests()
                 //страницы аутентификаци доступна всем
-                .antMatchers("/login").anonymous()
+                .antMatchers("/","/welcome","/login").anonymous()
                 // защищенные URL
                 .antMatchers("/hello").access("hasAnyRole('ADMIN')").anyRequest().authenticated();
     }

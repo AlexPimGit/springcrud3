@@ -73,4 +73,12 @@ public class UserDaoImpl implements UserDao {
         LOGGER.log(Level.INFO, "User successfully loaded. User details: " + user);
         return user;
     }
+
+    @Override
+    public User findByUserEmail(String email) {
+        Session session = sessionFactory.getCurrentSession();
+        User user = session.load(User.class, email);
+        LOGGER.log(Level.INFO, "User successfully loaded. User details: " + user);
+        return user;
+    }
 }

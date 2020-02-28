@@ -5,12 +5,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User implements UserDetails, GrantedAuthority {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +17,9 @@ public class User implements UserDetails, GrantedAuthority {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "password")
+    private String userPassword;
 
     @Column(name = "position")
     private String position;
@@ -29,9 +31,9 @@ public class User implements UserDetails, GrantedAuthority {
     private String email;
 
     @ManyToMany // один юзер может иметь много ролей, одна роль может иметь много юзеров
-    @JoinTable(name = "user_roles", // делаем таблицу связей для сущности юзер и сущности роль
+    @JoinTable(name = "users_roles", // делаем таблицу связей для сущности юзер и сущности роль
             joinColumns = @JoinColumn(name = "user_id"),//добавляем колонку связи "user_id"
-            inverseJoinColumns = @JoinColumn(name = "role_id"))// добавляем колонку связи для обратной связи "role_id"
+            inverseJoinColumns = @JoinColumn(name = "role_id"))// добавляем колонку для обратной связи "role_id"
     private Set<Role> roles;
 
     public Set<Role> getRoles() {
@@ -45,8 +47,18 @@ public class User implements UserDetails, GrantedAuthority {
     public User() {
     }
 
-    public User(String name, String position, int age, String email) {
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public User(Long id, String name, String userPassword, String position, int age, String email) {
+        this.id = id;
         this.name = name;
+        this.userPassword = userPassword;
         this.position = position;
         this.age = age;
         this.email = email;
@@ -104,23 +116,18 @@ public class User implements UserDetails, GrantedAuthority {
     }
 
     @Override
-    public String getAuthority() {
-        return null;
-    }
-
-    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return getRoles();
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return getUserPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return getName();
     }
 
     @Override

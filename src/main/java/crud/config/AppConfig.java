@@ -2,6 +2,7 @@ package crud.config;
 
 import crud.model.Role;
 import crud.model.User;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -22,11 +23,13 @@ import java.util.Properties;
 public class AppConfig {
 
     //подтягивает Environment из библиотеки Спринга, для дальнейшей ее конфигурации
+   @Autowired
     private Environment env;
 
-    public AppConfig(Environment env) {
-        this.env = env;
-    }
+//    @Autowired
+//    public AppConfig(Environment env) {
+//        this.env = env;
+//    }
 
     @Bean
     public DataSource getDataSource() {

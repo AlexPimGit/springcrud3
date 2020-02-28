@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-//@RequestMapping("/")// дефолтный ЮРЛ для всех методов, ниже уточнение
+@RequestMapping("/")// дефолтный ЮРЛ для всех методов, ниже уточнение
 public class CrudController {
     private UserService userService;
 
@@ -20,12 +20,38 @@ public class CrudController {
         this.userService = userService;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String allUsers() {
-        return "index";
+    @RequestMapping(value = {"/", "/welcome"}, method = RequestMethod.GET)
+    public String getHello(Model model) {
+        model.addAttribute("title", "welcome");
+        model.addAttribute("message", "Aloha, man!");
+        return "welcome";
     }
 
-    @RequestMapping(value = "users", method = RequestMethod.GET) //возвращать объект
+    @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
+    public String login(Model model, String error, String logout) {
+        if (error != null) {
+            model.addAttribute("error", "Username or password is incorrect.");
+        }
+
+        if (logout != null) {
+            model.addAttribute("message", "Logged out successfully.");
+        }
+
+        return "login";
+    }
+
+//    @RequestMapping(value = "/login", method = RequestMethod.GET)
+//    public String allUsers() {
+//        return "login";
+//    }
+
+//    @RequestMapping(value = "/", method = RequestMethod.POST)
+//
+//    public String allUsers() {
+//        return "login";
+//    }
+
+    @RequestMapping(value = "/users", method = RequestMethod.GET) //возвращать объект
     public Model listUsers(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("listUsers", userService.listUser());
