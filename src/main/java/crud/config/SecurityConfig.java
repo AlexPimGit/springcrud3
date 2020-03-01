@@ -17,12 +17,16 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Autowired
     private UserDetailsService userDetailsService;//
+    @Autowired
+    private LoginSuccessHandler loginSuccessHandler;
 
-    @Autowired // подхватываем свой кастомный юзерДетейлСервисИмпл и закидываем его сюда
-    public void setUserDetailsService(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-    }
+//    @Autowired // подхватываем свой кастомный юзерДетейлСервисИмпл и закидываем его сюда
+//    //т.е. закидываем данные Юзера из БД
+//    public void setUserDetailsService(UserDetailsService userDetailsService) {
+//        this.userDetailsService = userDetailsService;
+//    }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -36,7 +40,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 // указываем страницу с формой логина
                 .loginPage("/login")
                 //указываем логику обработки при логине
-                .successHandler(new LoginSuccessHandler())
+                .successHandler(loginSuccessHandler)
                 // указываем action с формы логина
                 .loginProcessingUrl("/login")
                 // Указываем параметры логина и пароля с формы логина
@@ -58,12 +62,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // делаем страницу регистрации недоступной для авторизированных пользователей
                 .authorizeRequests()
-                //страницы аутентификаци доступна всем
-                .antMatchers("/","/welcome","/login").anonymous()
+                //страницы аутентификаци доступна?????
+                .antMatchers("/login").permitAll().
+                antMatchers("/userdata").access("hasAnyAuthority('USER')")
                 // защищенные URL
-                .antMatchers("/hello").access("hasAnyRole('ADMIN')").anyRequest().authenticated();
+                .antMatchers("/hello", "/users").access("hasAnyAuthority('ADMIN')").anyRequest().authenticated();
+
     }
 
+    // кодирование пароля в БД - нет
     @Bean
     public PasswordEncoder passwordEncoder() {
         return NoOpPasswordEncoder.getInstance();

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -66,19 +67,28 @@ public class UserDaoImpl implements UserDao {
         return userList;
     }
 
-    @Override
-    public User findByUsername(String name) {
-        Session session = sessionFactory.getCurrentSession();
-        User user = session.load(User.class, name);
-        LOGGER.log(Level.INFO, "User successfully loaded. User details: " + user);
-        return user;
-    }
+//    @Override
+//    public User findByUsername(String name) {
+//        Session session = sessionFactory.getCurrentSession();
+//        User user = session.load(User.class, name);
+//        LOGGER.log(Level.INFO, "User successfully loaded. User details: " + user);
+//        return user;
+//    }
 
     @Override
     public User findByUserEmail(String email) {
         Session session = sessionFactory.getCurrentSession();
         User user = session.load(User.class, email);
         LOGGER.log(Level.INFO, "User successfully loaded. User details: " + user);
+        return user;
+    }
+
+    @Override
+    public User findByUsername(String name) {
+        Session session = sessionFactory.getCurrentSession();
+        String hql = "FROM User user WHERE user.name= :name";
+        User user = (User) session.createQuery(hql).setParameter("name", name).uniqueResult();
+        session.close();
         return user;
     }
 }

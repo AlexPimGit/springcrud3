@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/")// дефолтный ЮРЛ для всех методов, ниже уточнение
@@ -27,29 +28,16 @@ public class CrudController {
         return "welcome";
     }
 
-    @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
-    public String login(Model model, String error, String logout) {
-        if (error != null) {
-            model.addAttribute("error", "Username or password is incorrect.");
-        }
+//    @RequestMapping(value = {"login"}, method = RequestMethod.GET)
+//    public String login(Model model, String error, String logout) {
+//        return "login";
+//    }
 
-        if (logout != null) {
-            model.addAttribute("message", "Logged out successfully.");
-        }
-
-        return "login";
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView showLoginForm(ModelAndView modelAndView) {
+        modelAndView.setViewName("login");
+        return modelAndView;
     }
-
-//    @RequestMapping(value = "/login", method = RequestMethod.GET)
-//    public String allUsers() {
-//        return "login";
-//    }
-
-//    @RequestMapping(value = "/", method = RequestMethod.POST)
-//
-//    public String allUsers() {
-//        return "login";
-//    }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET) //возвращать объект
     public Model listUsers(Model model) {

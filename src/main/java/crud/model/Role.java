@@ -8,7 +8,7 @@ import java.util.Set;
 @Entity
 @Table(name = "roles")
 public class Role implements GrantedAuthority {
-    //
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,6 +16,10 @@ public class Role implements GrantedAuthority {
     private String name;
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
+
+    public Role(String name) {
+        this.name = name;
+    }
 
     public Set<User> getUsers() {
         return users;
@@ -59,6 +63,6 @@ public class Role implements GrantedAuthority {
 
     @Override
     public String getAuthority() {
-        return null;
+        return getName();
     }
 }

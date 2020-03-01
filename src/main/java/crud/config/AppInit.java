@@ -17,15 +17,14 @@ import java.util.Set;
 
 public class AppInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    // Метод, указывающий на класс конфигурации
+    // Метод, указывающий на класс конфигурации - что здесь вставляем? Секьюрити?
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
                 WebConfig.class
         };
     }
-
-    // Добавление конфигурации, в которой инициализируем ViewResolver, для корректного отображения jsp.
+        // Добавление конфигурации, в которой инициализируем ViewResolver, для корректного отображения jsp.
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class<?>[]{
@@ -72,15 +71,6 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
 
         customizeRegistration(registration);
     }
-//
-//    @Override
-//    protected Filter[] getServletFilters() {
-//        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
-//        characterEncodingFilter.setEncoding("UTF-8");
-//        characterEncodingFilter.setForceEncoding(true);
-//        return new Filter[]{characterEncodingFilter};
-//    }
-
 
     protected Set<SessionTrackingMode> getSessionTrackingModes() {
         return EnumSet.of(SessionTrackingMode.COOKIE);

@@ -20,16 +20,16 @@ import java.util.Properties;
 @PropertySource("classpath:db.properties")// загружает проперти-файл в Аппликэйшен контекст
 @EnableTransactionManagement //добавление транзакций (можно использовать в бинах аннотации @Transactional)
 @ComponentScan(value = "crud")//сканим пэкадж "crud" на наличие бинов
-public class AppConfig {
+public class AppConfig {//
 
     //подтягивает Environment из библиотеки Спринга, для дальнейшей ее конфигурации
-   @Autowired
+//   @Autowired
     private Environment env;
 
-//    @Autowired
-//    public AppConfig(Environment env) {
-//        this.env = env;
-//    }
+    @Autowired
+    public AppConfig(Environment env) {
+        this.env = env;
+    }
 
     @Bean
     public DataSource getDataSource() {
@@ -53,7 +53,6 @@ public class AppConfig {
 
         factoryBean.setHibernateProperties(props);
         factoryBean.setAnnotatedClasses(User.class, Role.class);
-//        factoryBean.setAnnotatedClasses(Role.class);//так не делатьЁЁ!!
         return factoryBean;
     }
 
