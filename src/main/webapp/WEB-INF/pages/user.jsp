@@ -49,7 +49,7 @@
 </head>
 <body>
 <h1>User Details</h1>
-
+<input type="hidden"${user} modelAttribute ="user">
 <table class="tg">
     <tr>
         <th width="80">ID</th>

@@ -13,10 +13,13 @@ public class Role implements GrantedAuthority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "name")
+    @Column(name = "name", unique = true)
     private String name;
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
     private Set<User> users;
+
+    public Role() {
+    }
 
     public Role(String name) {
         this.name = name;
@@ -28,14 +31,6 @@ public class Role implements GrantedAuthority {
 
     public void setUsers(Set<User> users) {
         this.users = users;
-    }
-
-    public Role() {
-    }
-
-    public Role(Long id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public Long getId() {
@@ -72,13 +67,11 @@ public class Role implements GrantedAuthority {
         if (this == o) return true;
         if (!(o instanceof Role)) return false;
         Role role = (Role) o;
-        return getId().equals(role.getId()) &&
-                getName().equals(role.getName()) &&
-                getUsers().equals(role.getUsers());
+        return getName().equals(role.getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getName(), getUsers());
+        return Objects.hash(getName());
     }
 }

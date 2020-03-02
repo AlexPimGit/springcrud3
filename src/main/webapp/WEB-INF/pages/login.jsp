@@ -8,6 +8,8 @@
 <body>
 <h3>Spring Security</h3>
 <h1>Login</h1>
+<%--Эту страницу, обрабатывает контроллер Spring'а по умолчанию. --%>
+<%--Важно указать действие: action="/login" и name инпутов--%>
 <form name='f' action="/login" method='POST'>
     <table>
         <tr>
@@ -24,7 +26,7 @@
     </table>
 </form>
 <br/>
-<a href="<c:url value="/users"/>">Users list</a>
+<a href="<c:url value="/admin"/>">Users list</a>
 <br/>
 </body>
 </html>

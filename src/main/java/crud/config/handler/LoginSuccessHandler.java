@@ -31,10 +31,10 @@ authentication- объект аутентификации, который был
         Role adminRole = new Role("ADMIN");
         Role userRole = new Role("USER");
         if(roles.contains(adminRole)){
-            httpServletResponse.sendRedirect("/users");
+            httpServletResponse.sendRedirect("/admin");
         } else if(roles.contains(userRole)){
-            httpServletResponse.sendRedirect("/userdata");
-
+            httpServletResponse.sendRedirect("/user");
         }
+        else httpServletResponse.sendRedirect("/test");
     }
 }

@@ -4,8 +4,10 @@ import crud.config.handler.LoginSuccessHandler;
 import crud.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -17,6 +19,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(securedEnabled = true)
+@ComponentScan(basePackages = {"crud"})
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;//
@@ -40,16 +44,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.formLogin()
                 // указываем страницу с формой логина
                 .loginPage("/login")
-                //указываем логику обработки при логине
-                .successHandler(loginSuccessHandler)
-                // указываем action с формы логина
+
+                // указываем action с формы логина (с jsp)
                 .loginProcessingUrl("/login")
                 .failureUrl("/login?error")
                 // Указываем параметры логина и пароля с формы логина
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
                 // даем доступ к форме логина всем
-                .permitAll();
+                .permitAll()
+                //указываем логику обработки при логине
+                .successHandler(loginSuccessHandler);
 
         http.logout()
                 // разрешаем делать логаут всем
@@ -64,9 +69,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // делаем страницу регистрации недоступной для авторизированных пользователей
                 .authorizeRequests()
-                .antMatchers("/users/*").hasRole("ADMIN")
-                .antMatchers("/userdata/*").hasAnyRole("USER", "ADMIN")
-                .antMatchers("/","/welcome", "/login*").permitAll()
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
+                .antMatchers("/user/**").hasAnyAuthority("USER", "ADMIN")
+                .antMatchers("/","/welcome","/test").permitAll()
+                //Все остальные страницы требуют аутентификации
                 .anyRequest().authenticated();
 
     }

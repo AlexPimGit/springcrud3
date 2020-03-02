@@ -1,13 +1,10 @@
 package crud.model;
 
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -35,6 +32,7 @@ public class User implements UserDetails {
 
     @ManyToMany(fetch = FetchType.EAGER) // один юзер может иметь много ролей, одна роль может иметь много юзеров
     @JoinTable(name = "users_roles", // делаем таблицу связей для сущности юзер и сущности роль
+            //FetchType.EAGER – «жадная» загрузка, т.е. список ролей загружается вместе с пользователем сразу (не ждет пока к нему обратятся)
             joinColumns = @JoinColumn(name = "user_id"),//добавляем колонку связи "user_id"
             inverseJoinColumns = @JoinColumn(name = "role_id"))// добавляем колонку для обратной связи "role_id"
     private Set<Role> roles;
@@ -159,22 +157,5 @@ public class User implements UserDetails {
         return true;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof User)) return false;
-        User user = (User) o;
-        return getAge() == user.getAge() &&
-                getId().equals(user.getId()) &&
-                getName().equals(user.getName()) &&
-                getUserPassword().equals(user.getUserPassword()) &&
-                getPosition().equals(user.getPosition()) &&
-                getEmail().equals(user.getEmail()) &&
-                getRoles().equals(user.getRoles());
-    }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getId(), getName(), getUserPassword(), getPosition(), getAge(), getEmail(), getRoles());
-    }
 }
