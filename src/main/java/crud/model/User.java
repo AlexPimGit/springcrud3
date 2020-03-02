@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -32,7 +33,7 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @ManyToMany // один юзер может иметь много ролей, одна роль может иметь много юзеров
+    @ManyToMany(fetch = FetchType.EAGER) // один юзер может иметь много ролей, одна роль может иметь много юзеров
     @JoinTable(name = "users_roles", // делаем таблицу связей для сущности юзер и сущности роль
             joinColumns = @JoinColumn(name = "user_id"),//добавляем колонку связи "user_id"
             inverseJoinColumns = @JoinColumn(name = "role_id"))// добавляем колонку для обратной связи "role_id"
@@ -156,5 +157,24 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return getAge() == user.getAge() &&
+                getId().equals(user.getId()) &&
+                getName().equals(user.getName()) &&
+                getUserPassword().equals(user.getUserPassword()) &&
+                getPosition().equals(user.getPosition()) &&
+                getEmail().equals(user.getEmail()) &&
+                getRoles().equals(user.getRoles());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getUserPassword(), getPosition(), getAge(), getEmail(), getRoles());
     }
 }

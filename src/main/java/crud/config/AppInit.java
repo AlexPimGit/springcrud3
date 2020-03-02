@@ -21,10 +21,11 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
-                WebConfig.class
+                WebConfig.class, SecurityConfig.class
         };
     }
-        // Добавление конфигурации, в которой инициализируем ViewResolver, для корректного отображения jsp.
+
+    // Добавление конфигурации, в которой инициализируем ViewResolver, для корректного отображения jsp.
     @Override
     protected Class<?>[] getServletConfigClasses() {
         return new Class<?>[]{
@@ -38,42 +39,49 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
         return new String[]{"/"};
     }
 
-    @Override
-    protected void registerDispatcherServlet(ServletContext servletContext) {
-        String servletName = getServletName();
-        Assert.hasLength(servletName, "getServletName() must not return empty or null");
-
-        WebApplicationContext servletAppContext = createServletApplicationContext();
-        Assert.notNull(servletAppContext,
-                "createServletApplicationContext() did not return an application " +
-                        "context for servlet [" + servletName + "]");
-
-        FrameworkServlet dispatcherServlet = createDispatcherServlet(servletAppContext);
-        dispatcherServlet.setContextInitializers(getServletApplicationContextInitializers());
-
-        ServletRegistration.Dynamic registration = servletContext.addServlet(servletName, dispatcherServlet);
-        Assert.notNull(registration,
-                "Failed to register servlet with name '" + servletName + "'." +
-                        "Check if there is another servlet registered under the same name.");
-
-        registration.setLoadOnStartup(1);
-        registration.addMapping(getServletMappings());
-        registration.setAsyncSupported(isAsyncSupported());
-//добавил
-        servletContext.setSessionTrackingModes(getSessionTrackingModes());
+//    @Override
+//    protected void registerDispatcherServlet(ServletContext servletContext) {
+//        String servletName = getServletName();
+//        Assert.hasLength(servletName, "getServletName() must not return empty or null");
 //
-        Filter[] filters = getServletFilters();
-        if (!ObjectUtils.isEmpty(filters)) {
-            for (Filter filter : filters) {
-                registerServletFilter(servletContext, filter);
-            }
-        }
+//        WebApplicationContext servletAppContext = createServletApplicationContext();
+//        Assert.notNull(servletAppContext,
+//                "createServletApplicationContext() did not return an application " +
+//                        "context for servlet [" + servletName + "]");
+//
+//        FrameworkServlet dispatcherServlet = createDispatcherServlet(servletAppContext);
+//        dispatcherServlet.setContextInitializers(getServletApplicationContextInitializers());
+//
+//        ServletRegistration.Dynamic registration = servletContext.addServlet(servletName, dispatcherServlet);
+//        Assert.notNull(registration,
+//                "Failed to register servlet with name '" + servletName + "'." +
+//                        "Check if there is another servlet registered under the same name.");
+//
+//        registration.setLoadOnStartup(1);
+//        registration.addMapping(getServletMappings());
+//        registration.setAsyncSupported(isAsyncSupported());
+////добавил
+//        servletContext.setSessionTrackingModes(getSessionTrackingModes());
+////
+//        Filter[] filters = getServletFilters();
+//        if (!ObjectUtils.isEmpty(filters)) {
+//            for (Filter filter : filters) {
+//                registerServletFilter(servletContext, filter);
+//            }
+//        }
+//
+//        customizeRegistration(registration);
+//    }
+//
+//    protected Set<SessionTrackingMode> getSessionTrackingModes() {
+//        return EnumSet.of(SessionTrackingMode.COOKIE);
+//    }
 
-        customizeRegistration(registration);
+    @Override
+    protected Filter[] getServletFilters() {
+        CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
+        characterEncodingFilter.setEncoding("UTF-8");
+        characterEncodingFilter.setForceEncoding(true);
+        return new Filter[]{characterEncodingFilter};
     }
-
-    protected Set<SessionTrackingMode> getSessionTrackingModes() {
-        return EnumSet.of(SessionTrackingMode.COOKIE);
-    }
-
 }

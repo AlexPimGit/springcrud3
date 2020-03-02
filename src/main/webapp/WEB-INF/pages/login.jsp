@@ -8,7 +8,7 @@
 <body>
 <h3>Spring Security</h3>
 <h1>Login</h1>
-<form name='f' action="users" method='POST'>
+<form name='f' action="/login" method='POST'>
     <table>
         <tr>
             <td>User:</td>

@@ -88,7 +88,7 @@ public class UserDaoImpl implements UserDao {
         Session session = sessionFactory.getCurrentSession();
         String hql = "FROM User user WHERE user.name= :name";
         User user = (User) session.createQuery(hql).setParameter("name", name).uniqueResult();
-        session.close();
+        //session.close();
         return user;
     }
 }

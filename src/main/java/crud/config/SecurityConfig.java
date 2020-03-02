@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+//import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
@@ -28,8 +29,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        this.userDetailsService = userDetailsService;
 //    }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 //       auth.inMemoryAuthentication().withUser("ADMIN").password("ADMIN").roles("ADMIN");
         auth.userDetailsService(userDetailsService);
     }
@@ -43,6 +44,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(loginSuccessHandler)
                 // указываем action с формы логина
                 .loginProcessingUrl("/login")
+                .failureUrl("/login?error")
                 // Указываем параметры логина и пароля с формы логина
                 .usernameParameter("j_username")
                 .passwordParameter("j_password")
@@ -62,11 +64,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 // делаем страницу регистрации недоступной для авторизированных пользователей
                 .authorizeRequests()
-                //страницы аутентификаци доступна?????
-                .antMatchers("/login").permitAll().
-                antMatchers("/userdata").access("hasAnyAuthority('USER')")
-                // защищенные URL
-                .antMatchers("/hello", "/users").access("hasAnyAuthority('ADMIN')").anyRequest().authenticated();
+                .antMatchers("/users/*").hasRole("ADMIN")
+                .antMatchers("/userdata/*").hasAnyRole("USER", "ADMIN")
+                .antMatchers("/","/welcome", "/login*").permitAll()
+                .anyRequest().authenticated();
 
     }
 
