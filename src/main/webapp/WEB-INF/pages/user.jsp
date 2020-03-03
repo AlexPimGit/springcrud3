@@ -66,8 +66,8 @@
         <td>${user.position}</td>
         <td>${user.age}</td>
         <td>${user.email}</td>
-
     </tr>
 </table>
+<a href="<c:url value="/logout" />">Logout</a>
 </body>
 </html>

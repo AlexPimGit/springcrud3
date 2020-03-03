@@ -25,8 +25,5 @@
         </tr>
     </table>
 </form>
-<br/>
-<a href="<c:url value="/admin"/>">Users list</a>
-<br/>
 </body>
 </html>

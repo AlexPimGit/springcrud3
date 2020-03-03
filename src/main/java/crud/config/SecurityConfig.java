@@ -63,6 +63,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 // указываем URL при удачном логауте
                 .logoutSuccessUrl("/login?logout")
+                .and()
+                .exceptionHandling().accessDeniedPage("/403")
                 //выклчаем кроссдоменную секьюрность (на этапе обучения неважна)
                 .and().csrf().disable();
 
