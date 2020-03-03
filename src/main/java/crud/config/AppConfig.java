@@ -1,5 +1,6 @@
 package crud.config;
 
+import crud.model.Role;
 import crud.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -19,11 +20,13 @@ import java.util.Properties;
 @PropertySource("classpath:db.properties")// загружает проперти-файл в Аппликэйшен контекст
 @EnableTransactionManagement //добавление транзакций (можно использовать в бинах аннотации @Transactional)
 @ComponentScan(value = "crud")//сканим пэкадж "crud" на наличие бинов
-public class AppConfig {
+public class AppConfig {//
 
     //подтягивает Environment из библиотеки Спринга, для дальнейшей ее конфигурации
+//   @Autowired
     private Environment env;
 
+    @Autowired
     public AppConfig(Environment env) {
         this.env = env;
     }
@@ -49,7 +52,7 @@ public class AppConfig {
         props.put("hibernate.dialect", env.getProperty("hibernate.dialect"));
 
         factoryBean.setHibernateProperties(props);
-        factoryBean.setAnnotatedClasses(User.class);
+        factoryBean.setAnnotatedClasses(User.class, Role.class);
         return factoryBean;
     }
 

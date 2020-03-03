@@ -45,7 +45,7 @@
     </style>
 </head>
 <body>
-<%--<a href="../../index.jsp">Back to main menu</a>--%>
+<%--<a href="../../login.jsp">Back to main menu</a>--%>
 <a href="<c:url value="/"/>" target="_self">Back to main menu</a>
 
 <br/>
@@ -58,6 +58,7 @@
         <tr>
             <th width="80">ID</th>
             <th width="120">Name</th>
+            <th width="120">Password</th>
             <th width="120">Position</th>
             <th width="120">Age</th>
             <th width="120">Email</th>
@@ -67,12 +68,13 @@
         <c:forEach items="${listUsers}" var="user">
             <tr>
                 <td>${user.id}</td>
-                <td><a href="/userdata/${user.id}" target="_blank">${user.name}</a></td>
+                <td><a href="/user/${user.id}" target="_blank">${user.name}</a></td>
+                <td>${user.userPassword}</td>
                 <td>${user.position}</td>
                 <td>${user.age}</td>
                 <td>${user.email}</td>
-                <td><a href="<c:url value='/edit/${user.id}'/>">Edit</a></td>
-                <td><a href="<c:url value='/remove/${user.id}'/>">Delete</a></td>
+                <td><a href="<c:url value='/admin/edit/${user.id}'/>">Edit</a></td>
+                <td><a href="<c:url value='/admin/remove/${user.id}'/>">Delete</a></td>
             </tr>
         </c:forEach>
     </table>
@@ -81,7 +83,7 @@
 
 <h1>Add a User</h1>
 
-<c:url var="addAction" value="/add"/>
+<c:url var="addAction" value="/admin/add"/>
 <form:form action="${addAction}" modelAttribute="user">
     <table>
         <c:if test="${!empty user.name}">
@@ -105,6 +107,16 @@
             </td>
             <td>
                 <form:input path="name"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <form:label path="userPassword">
+                    <spring:message text="Password"/>
+                </form:label>
+            </td>
+            <td>
+                <form:input path="userPassword"/>
             </td>
         </tr>
         <tr>
@@ -151,6 +163,7 @@
         </tr>
     </table>
 </form:form>
+<a href="<c:url value="/logout" />">Logout</a>
 </body>
 </html>
 

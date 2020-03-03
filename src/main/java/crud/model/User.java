@@ -1,10 +1,15 @@
 package crud.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -12,6 +17,9 @@ public class User {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "password")
+    private String userPassword;
 
     @Column(name = "position")
     private String position;
@@ -22,14 +30,45 @@ public class User {
     @Column(name = "email")
     private String email;
 
+    @ManyToMany(fetch = FetchType.EAGER) // один юзер может иметь много ролей, одна роль может иметь много юзеров
+    @JoinTable(name = "users_roles", // делаем таблицу связей для сущности юзер и сущности роль
+            //FetchType.EAGER – «жадная» загрузка, т.е. список ролей загружается вместе с пользователем сразу (не ждет пока к нему обратятся)
+            joinColumns = @JoinColumn(name = "user_id"),//добавляем колонку связи "user_id"
+            inverseJoinColumns = @JoinColumn(name = "role_id"))// добавляем колонку для обратной связи "role_id"
+    private Set<Role> roles;
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
     public User() {
     }
 
-    public User(String name, String position, int age, String email) {
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
+    }
+
+    public User(Long id, String name, String userPassword, String position, int age, String email) {
+        this.id = id;
         this.name = name;
+        this.userPassword = userPassword;
         this.position = position;
         this.age = age;
         this.email = email;
+    }
+
+    public User(String name, String userPassword, Set<Role> roles) {
+        this.name = name;
+        this.userPassword = userPassword;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -82,4 +121,41 @@ public class User {
                 ", email='" + email + '\'' +
                 '}';
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return getUserPassword();
+    }
+
+    @Override
+    public String getUsername() {
+        return getName();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+
 }

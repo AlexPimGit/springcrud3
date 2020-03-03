@@ -1,0 +1,29 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>login</title>
+</head>
+<body>
+<h3>Spring Security</h3>
+<h1>Login</h1>
+<%--Эту страницу, обрабатывает контроллер Spring'а по умолчанию. --%>
+<%--Важно указать действие: action="/login" и name инпутов--%>
+<form name='f' action="/login" method='POST'>
+    <table>
+        <tr>
+            <td>User:</td>
+            <td><input type='text' name='j_username' value=''></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type='password' name='j_password'/></td>
+        </tr>
+        <tr>
+            <td><input name="submit" type="submit" value="submit"/></td>
+        </tr>
+    </table>
+</form>
+</body>
+</html>

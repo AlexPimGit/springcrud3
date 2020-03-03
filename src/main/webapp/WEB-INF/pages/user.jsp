@@ -49,11 +49,12 @@
 </head>
 <body>
 <h1>User Details</h1>
-
+<input type="hidden"${user} modelAttribute ="user">
 <table class="tg">
     <tr>
         <th width="80">ID</th>
         <th width="120">Name</th>
+        <th width="120">Password</th>
         <th width="120">Position</th>
         <th width="120">Age</th>
         <th width="120">Email</th>
@@ -61,11 +62,12 @@
     <tr>
         <td>${user.id}</td>
         <td>${user.name}</td>
+        <td>${user.userPassword}</td>
         <td>${user.position}</td>
         <td>${user.age}</td>
         <td>${user.email}</td>
-
     </tr>
 </table>
+<a href="<c:url value="/logout" />">Logout</a>
 </body>
 </html>

@@ -17,11 +17,11 @@ import java.util.Set;
 
 public class AppInit extends AbstractAnnotationConfigDispatcherServletInitializer {
 
-    // Метод, указывающий на класс конфигурации
+    // Метод, указывающий на класс конфигурации - что здесь вставляем? Секьюрити?
     @Override
     protected Class<?>[] getRootConfigClasses() {
         return new Class<?>[]{
-                WebConfig.class
+                SecurityConfig.class, WebConfig.class
         };
     }
 
@@ -33,46 +33,49 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
         };
     }
 
-
     /* Данный метод указывает url, на котором будет базироваться приложение */
     @Override
     protected String[] getServletMappings() {
         return new String[]{"/"};
     }
 
-    @Override
-    protected void registerDispatcherServlet(ServletContext servletContext) {
-        String servletName = getServletName();
-        Assert.hasLength(servletName, "getServletName() must not return empty or null");
-
-        WebApplicationContext servletAppContext = createServletApplicationContext();
-        Assert.notNull(servletAppContext,
-                "createServletApplicationContext() did not return an application " +
-                        "context for servlet [" + servletName + "]");
-
-        FrameworkServlet dispatcherServlet = createDispatcherServlet(servletAppContext);
-        dispatcherServlet.setContextInitializers(getServletApplicationContextInitializers());
-
-        ServletRegistration.Dynamic registration = servletContext.addServlet(servletName, dispatcherServlet);
-        Assert.notNull(registration,
-                "Failed to register servlet with name '" + servletName + "'." +
-                        "Check if there is another servlet registered under the same name.");
-
-        registration.setLoadOnStartup(1);
-        registration.addMapping(getServletMappings());
-        registration.setAsyncSupported(isAsyncSupported());
-//добавил
-        servletContext.setSessionTrackingModes(getSessionTrackingModes());
-
-        Filter[] filters = getServletFilters();
-        if (!ObjectUtils.isEmpty(filters)) {
-            for (Filter filter : filters) {
-                registerServletFilter(servletContext, filter);
-            }
-        }
-
-        customizeRegistration(registration);
-    }
+//    @Override
+//    protected void registerDispatcherServlet(ServletContext servletContext) {
+//        String servletName = getServletName();
+//        Assert.hasLength(servletName, "getServletName() must not return empty or null");
+//
+//        WebApplicationContext servletAppContext = createServletApplicationContext();
+//        Assert.notNull(servletAppContext,
+//                "createServletApplicationContext() did not return an application " +
+//                        "context for servlet [" + servletName + "]");
+//
+//        FrameworkServlet dispatcherServlet = createDispatcherServlet(servletAppContext);
+//        dispatcherServlet.setContextInitializers(getServletApplicationContextInitializers());
+//
+//        ServletRegistration.Dynamic registration = servletContext.addServlet(servletName, dispatcherServlet);
+//        Assert.notNull(registration,
+//                "Failed to register servlet with name '" + servletName + "'." +
+//                        "Check if there is another servlet registered under the same name.");
+//
+//        registration.setLoadOnStartup(1);
+//        registration.addMapping(getServletMappings());
+//        registration.setAsyncSupported(isAsyncSupported());
+////добавил
+//        servletContext.setSessionTrackingModes(getSessionTrackingModes());
+////
+//        Filter[] filters = getServletFilters();
+//        if (!ObjectUtils.isEmpty(filters)) {
+//            for (Filter filter : filters) {
+//                registerServletFilter(servletContext, filter);
+//            }
+//        }
+//
+//        customizeRegistration(registration);
+//    }
+//
+//    protected Set<SessionTrackingMode> getSessionTrackingModes() {
+//        return EnumSet.of(SessionTrackingMode.COOKIE);
+//    }
 
     @Override
     protected Filter[] getServletFilters() {
@@ -81,10 +84,4 @@ public class AppInit extends AbstractAnnotationConfigDispatcherServletInitialize
         characterEncodingFilter.setForceEncoding(true);
         return new Filter[]{characterEncodingFilter};
     }
-
-
-    protected Set<SessionTrackingMode> getSessionTrackingModes() {
-        return EnumSet.of(SessionTrackingMode.COOKIE);
-    }
-
 }
