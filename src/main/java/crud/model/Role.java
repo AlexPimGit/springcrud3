@@ -15,7 +15,7 @@ public class Role implements GrantedAuthority {
     private Long id;
     @Column(name = "name", unique = true)
     private String name;
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.EAGER)//подомать зачем МтуМ, заменить
     private Set<User> users;
 
     public Role() {

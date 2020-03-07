@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 @Repository
 public class UserDaoImpl implements UserDao {
     private Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
-    private SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;//использовать entity менеджер без СпрингДата
 
     @Autowired
     public UserDaoImpl(SessionFactory sessionFactory) {
