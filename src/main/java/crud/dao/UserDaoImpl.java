@@ -2,56 +2,53 @@ package crud.dao;
 
 
 import crud.model.User;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
-import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Repository
 public class UserDaoImpl implements UserDao {
     private Logger LOGGER = Logger.getLogger(UserDaoImpl.class.getName());
-    private SessionFactory sessionFactory;//использовать entity менеджер без СпрингДата
+    @PersistenceContext
+    private EntityManager entityManager;//использовать entity менеджер без СпрингДата
 
-    @Autowired
-    public UserDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+////    @Autowired
+//    public UserDaoImpl(EntityManager entityManager) {
+//        this.entityManager = entityManager;
+//    }
+
+    public UserDaoImpl() {
     }
 
     //как в этих методах быть с исключениями??
     @Override
     public void addUser(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.persist(user);
+        entityManager.persist(user);
         LOGGER.log(Level.INFO, "User successfully saved. User details: " + user);
     }
 
     @Override
     public void updateUser(User user) {
-        Session session = sessionFactory.getCurrentSession();
-        session.update(user);
+        entityManager.refresh(user);
         LOGGER.log(Level.INFO, "User successfully updated. User details: " + user);
     }
 
     @Override
     public void removeUser(Long id) {
-        Session session = sessionFactory.getCurrentSession();
-        User user = session.load(User.class, id);
-
+        User user = entityManager.find(User.class, id);
         if (user != null) {
-            session.delete(user);
+            entityManager.remove(user);
         }
         LOGGER.log(Level.INFO, "User successfully deleted. User details: " + user);
     }
 
     @Override
     public User getUserById(Long id) {
-        Session session = sessionFactory.getCurrentSession();
-        User user = session.load(User.class, id);
+        User user = entityManager.find(User.class, id);
         LOGGER.log(Level.INFO, "User successfully loaded. User details: " + user);
         return user;
     }
@@ -59,8 +56,7 @@ public class UserDaoImpl implements UserDao {
     @Override
     @SuppressWarnings("unchecked")
     public List<User> listUser() {
-        Session session = sessionFactory.getCurrentSession();
-        List<User> userList = session.createQuery("FROM User").list();
+        List<User> userList = entityManager.createQuery("FROM User").getResultList();
         for (User user : userList) {
             LOGGER.log(Level.INFO, "User list: " + user);
         }
@@ -77,18 +73,15 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User findByUserEmail(String email) {
-        Session session = sessionFactory.getCurrentSession();
-        User user = session.load(User.class, email);
+        User user = entityManager.find(User.class, email);
         LOGGER.log(Level.INFO, "User successfully loaded. User details: " + user);
         return user;
     }
 
     @Override
     public User findByUsername(String name) {
-        Session session = sessionFactory.getCurrentSession();
         String hql = "FROM User user WHERE user.name= :name";
-        User user = (User) session.createQuery(hql).setParameter("name", name).uniqueResult();
-        //session.close();
+        User user = (User) entityManager.createQuery(hql).setParameter("name", name).getSingleResult();
         return user;
     }
 }

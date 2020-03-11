@@ -1,12 +1,10 @@
 package crud.dao;
 
 import crud.model.Role;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,42 +12,43 @@ import java.util.logging.Logger;
 @Repository
 public class RoleDaoImpl implements RoleDao {
     private Logger LOGGER = Logger.getLogger(RoleDaoImpl.class.getName());
+    @PersistenceContext
     private EntityManager entityManager;
 
-    @Autowired
-    public RoleDaoImpl(SessionFactory sessionFactory) {
-        this.entityManager = sessionFactory;
+////    @Autowired
+//    public RoleDaoImpl(EntityManager entityManager) {
+//        this.entityManager = entityManager;
+//    }
+
+
+    public RoleDaoImpl() {
     }
 
     @Override
     public void addRole(Role role) {
-        Session session = entityManager.getCurrentSession();
-        session.persist(role);
+        entityManager.persist(role);//persist (добавление Entity под управление JPA)
         LOGGER.log(Level.INFO, "Role successfully saved. Role details: " + role);
     }
 
     @Override
     public void updateRole(Role role) {
-        Session session = entityManager.getCurrentSession();
-        session.update(role);
+//        entityManager.update(role);
+        entityManager.refresh(role);
         LOGGER.log(Level.INFO, "Role successfully updated. Role details: " + role);
     }
 
     @Override
     public void removeRole(Long id) {
-        Session session = entityManager.getCurrentSession();
-        Role role = session.load(Role.class, id);
-
+        Role role = entityManager.find(Role.class, id);
         if (role != null) {
-            session.delete(role);
+            entityManager.remove(role);
         }
         LOGGER.log(Level.INFO, "Role successfully deleted. Role details: " + role);
     }
 
     @Override
     public List<Role> listRole() {
-        Session session = entityManager.getCurrentSession();
-        List<Role> roleList = session.createQuery("FROM Role").list();
+        List<Role> roleList = entityManager.createQuery("FROM Role").getResultList();
         for (Role role : roleList) {
             LOGGER.log(Level.INFO, "Role list: " + role);
         }

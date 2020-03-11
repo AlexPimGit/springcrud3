@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
 <head>
     <title>Users Page</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <style type="text/css">
         .tg {
             border-collapse: collapse;
@@ -44,45 +44,35 @@
     </style>
 </head>
 <body>
-<%--<a href="../../login.jsp">Back to main menu</a>--%>
-<a href="<c:url value="/"/>" target="_self">Back to main menu</a>
-
+<a th:href="@{/}">Back to main menu</a>
 <br/>
 <br/>
-
 <h1>User List</h1>
-
-<c:if test="${!empty listUsers}">
-    <table class="tg">
-        <tr>
-            <th width="80">ID</th>
-            <th width="120">Name</th>
-            <th width="120">Password</th>
-            <th width="120">Position</th>
-            <th width="120">Age</th>
-            <th width="120">Email</th>
-            <th width="60">Edit</th>
-            <th width="60">Delete</th>
-        </tr>
-        <c:forEach items="${listUsers}" var="user">
-            <tr>
-                <td>${user.id}</td>
-                <td><a href="/user/${user.id}" target="_blank">${user.name}</a></td>
-                <td>${user.userPassword}</td>
-                <td>${user.position}</td>
-                <td>${user.age}</td>
-                <td>${user.email}</td>
-                <td><a href="<c:url value='/admin/edit/${user.id}'/>">Edit</a></td>
-                <td><a href="<c:url value='/admin/remove/${user.id}'/>">Delete</a></td>
-            </tr>
-        </c:forEach>
-    </table>
-</c:if>
-
+<table class="tg">
+    <tr>
+        <th width="80">ID</th>
+        <th width="120">Name</th>
+        <th width="120">Password</th>
+        <th width="120">Position</th>
+        <th width="120">Age</th>
+        <th width="120">Email</th>
+        <th width="60">Edit</th>
+        <th width="60">Delete</th>
+    </tr>
+    <tr th:each="user : ${listUsers}">
+        <td>${user.id}</td>
+        <td><a th:href="@{/user}">${user.name}</a></td>
+        <td>${user.userPassword}</td>
+        <td>${user.position}</td>
+        <td>${user.age}</td>
+        <td>${user.email}</td>
+        <td><a th:href="@{/admin/edit/${user.id}}">${user.id}>Edit</a></td>
+        <td><a th:href="@{/admin/remove/${user.id}}">${user.id}>Delete</a></td>
+    </tr>
+</table>
 
 <h1>Add a User</h1>
-
-<c:url var="addAction" value="/admin/add"/>
+<a th:href="@{/admin/add}"></a>
 <form:form action="${addAction}" modelAttribute="user">
     <table>
         <c:if test="${!empty user.name}">
@@ -152,17 +142,17 @@
             <td colspan="2">
                 <c:if test="${!empty user.name}">
                     <input type="submit"
-                           value="<spring:message text="Edit User"/>"/>
+                           value="<spring:message text=" Edit User"/>"/>
                 </c:if>
                 <c:if test="${empty user.name}">
                     <input type="submit"
-                           value="<spring:message text="Add User"/>"/>
+                           value="<spring:message text=" Add User"/>"/>
                 </c:if>
             </td>
         </tr>
     </table>
 </form:form>
-<a href="<c:url value="/logout" />">Logout</a>
+<a  th:href="@{/logout}">Logout</a>
 </body>
 </html>
 
