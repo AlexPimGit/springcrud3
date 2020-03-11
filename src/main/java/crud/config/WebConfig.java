@@ -24,7 +24,6 @@ public class WebConfig implements WebMvcConfigurer {
     public SpringResourceTemplateResolver setupViewResolver() {//
         SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
         resolver.setPrefix("/WEB-INF/pages/");
-//      resolver.setSuffix(".jsp");
         resolver.setSuffix(".html");
 //        resolver.setViewClass(JstlView.class);
         //resolver.resolveViewName("")
@@ -32,7 +31,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Bean
-    public SpringTemplateEngine templateEngine(){
+    public SpringTemplateEngine templateEngine() {
         // SpringTemplateEngine automatically applies SpringStandardDialect and
         // enables Spring's own MessageSource message resolution mechanisms.
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
