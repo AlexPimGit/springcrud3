@@ -30,12 +30,12 @@ public class CrudController {
 
     @GetMapping("/login")//когда будет вызван метод Get по юрлу /login сработает данный метод
     public String login() {
-        return "login";
+        return "/WEB-INF/pages/login";
     }
 
     @RequestMapping(value = {"/test"}, method = RequestMethod.GET)
     public String t() {
-        return "test";
+        return "/WEB-INF/pages/test.html";
     }
 
     @RequestMapping(value = "/admin", method = RequestMethod.GET) //возвращать объект
@@ -67,13 +67,13 @@ public class CrudController {
     public String editUser(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
         model.addAttribute("listUsers", userService.listUser());
-        return "admin";
+        return "/WEB-INF/pages/admin.html";
     }
 
     @RequestMapping(value = "/user/{id}")
     public String userData(@PathVariable("id") Long id, Model model) {
         model.addAttribute("user", userService.getUserById(id));
-        return "user";
+        return "/WEB-INF/pages/user.html";
     }
 
     @RequestMapping(path = "/user", method = RequestMethod.GET)
@@ -95,7 +95,7 @@ public class CrudController {
             UserDetails userDetail = (UserDetails) auth.getPrincipal();
             model.addObject("username", userDetail.getUsername());
         }
-        model.setViewName("403");
+        model.setViewName("/WEB-INF/pages/403.html");
         return model;
     }
 }

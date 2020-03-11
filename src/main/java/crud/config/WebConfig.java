@@ -1,5 +1,6 @@
 package crud.config;
 
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -9,9 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-@Configuration//данный класс используется контейнером Spring IoC, как конфигурационный класс для создания бинов
-@EnableWebMvc//включения модуля Spring MVC в приложение
-@ComponentScan("crud")//сканируем (ищем) бины (@Component) в пакете "crud"
+@SpringBootApplication
 public class WebConfig implements WebMvcConfigurer {//имплеминтируемся от интерфейса, чтобы изменить настройки по умолчанию
 
     // определяет местоположение статических ресурсов
@@ -26,7 +25,8 @@ public class WebConfig implements WebMvcConfigurer {//имплеминтируе
     public InternalResourceViewResolver setupViewResolver() {//
         InternalResourceViewResolver resolver = new InternalResourceViewResolver();
         resolver.setPrefix("/WEB-INF/pages/");
-        resolver.setSuffix(".jsp");
+//        resolver.setSuffix(".jsp");
+        resolver.setSuffix(".html");
         resolver.setViewClass(JstlView.class);
         //resolver.resolveViewName("")
         return resolver;

@@ -6,6 +6,7 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,30 +14,30 @@ import java.util.logging.Logger;
 @Repository
 public class RoleDaoImpl implements RoleDao {
     private Logger LOGGER = Logger.getLogger(RoleDaoImpl.class.getName());
-    private SessionFactory sessionFactory;
+    private EntityManager entityManager;
 
     @Autowired
     public RoleDaoImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
+        this.entityManager = sessionFactory;
     }
 
     @Override
     public void addRole(Role role) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = entityManager.getCurrentSession();
         session.persist(role);
         LOGGER.log(Level.INFO, "Role successfully saved. Role details: " + role);
     }
 
     @Override
     public void updateRole(Role role) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = entityManager.getCurrentSession();
         session.update(role);
         LOGGER.log(Level.INFO, "Role successfully updated. Role details: " + role);
     }
 
     @Override
     public void removeRole(Long id) {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = entityManager.getCurrentSession();
         Role role = session.load(Role.class, id);
 
         if (role != null) {
@@ -47,7 +48,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public List<Role> listRole() {
-        Session session = sessionFactory.getCurrentSession();
+        Session session = entityManager.getCurrentSession();
         List<Role> roleList = session.createQuery("FROM Role").list();
         for (Role role : roleList) {
             LOGGER.log(Level.INFO, "Role list: " + role);
